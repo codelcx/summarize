@@ -1,0 +1,54 @@
+{
+  "name": "summarize",
+  "version": "1.0.0",
+  "description": "Total issues encountered",
+  "type": "module",
+  "packageManager": "pnpm@9.5.0",
+  "scripts": {
+    "dev:vue": "pnpm -C examples/vue dev",
+    "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
+    "clean:dist": "rimraf dist",
+    "build": "pnpm run -C internal/build start",
+    "build:eslint": "pnpm run -C internal/eslint-config build",
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix",
+    "*.{css,scss,vue}": "stylelint --fix"
+  },
+  "engines": {
+    "node": ">= 20"
+  },
+  "dependencies": {
+    "@cx/components": "workspace:*",
+    "@cx/eslint-config": "workspace:*",
+    "@cx/hooks": "workspace:*",
+    "@cx/utils": "workspace:*",
+    "vue": "^3.5.25"
+  },
+  "devDependencies": {
+    "@stylistic/stylelint-config": "^3.0.1",
+    "@stylistic/stylelint-plugin": "^4.0.0",
+    "@swc/core": "^1.13.5",
+    "@types/node": "^24.5.2",
+    "eslint": "^9.39.2",
+    "lint-staged": "^16.2.5",
+    "picocolors": "^1.1.1",
+    "pretty-bytes": "^7.1.0",
+    "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.13.1",
+    "stylelint": "^16.26.1",
+    "stylelint-config-recess-order": "^7.4.0",
+    "stylelint-config-standard": "^39.0.1",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "stylelint-config-standard-vue": "^1.0.0",
+    "stylelint-order": "^7.0.0",
+    "stylelint-scss": "^6.13.0",
+    "typescript": "~5.8.3",
+    "vue-tsc": "^3.0.5"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@cx/utils",
+  "version": "0.0.1",
+  "description": "cx tool",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts"
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@cx/schemes",
+  "version": "3.5.21",
+  "description": "internal schemes packages",
+  "main": "index.js",
+  "module": "dist/schemes.esm-bundler.js",
+  "types": "dist/schemes.d.ts",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/schemes.d.ts",
+      "node": {
+        "production": "./dist/schemes.cjs.prod.js",
+        "development": "./dist/schemes.cjs.js",
+        "default": "./index.js"
+      },
+      "module": "./dist/schemes.esm-bundler.js",
+      "import": "./dist/schemes.esm-bundler.js",
+      "require": "./index.js"
+    },
+    "./*": "./*"
+  },
+  "sideEffects": false,
+  "buildOptions": {
+    "formats": [
+      "esm-bundler",
+      "cjs"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/core.git",
+    "directory": "packages/schemes"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vuejs/core/issues"
+  },
+  "homepage": "https://github.com/vuejs/core/tree/main/packages/schemes#readme",
+  "dependencies": {
+    "recorder-core": "^1.3.25011100",
+    "vue": "catalog:"
+  }
+}

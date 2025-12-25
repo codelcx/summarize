@@ -1,0 +1,14 @@
+{
+  "name": "@cx/hooks",
+  "version": "0.0.1",
+  "description": "cx composables",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts",
+  "peerDependencies": {
+    "vue": "catalog:"
+  },
+  "devDependencies": {
+    "vue": "catalog:"
+  }
+}

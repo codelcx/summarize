@@ -1,0 +1,42 @@
+{
+  "name": "@cx/build",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Build Toolchain for CX",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "start": "gulp --require tsx/dist/loader.cjs -f gulpfile.ts",
+    "dev": "pnpm run stub",
+    "stub": "unbuild --stub",
+    "build": "unbuild"
+  },
+  "dependencies": {
+    "@pnpm/find-workspace-packages": "^4.0.16",
+    "@pnpm/logger": "^4.0.0",
+    "@pnpm/types": "^1001.1.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
+    "@types/fs-extra": "^11.0.4",
+    "@types/gulp": "^4.0.18",
+    "@vitejs/plugin-vue": "6.0.2",
+    "chalk": "^5.6.2",
+    "consola": "^2.15.3",
+    "cssnano": "^7.1.2",
+    "fast-glob": "^3.2.11",
+    "fs-extra": "^10.1.0",
+    "gulp": "^4.0.2",
+    "rollup": "4.34.8",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-sass": "^1.15.3",
+    "rollup-plugin-vue": "^6.0.0",
+    "tinyglobby": "^0.2.15"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "unbuild": "^3.6.1"
+  }
+}
