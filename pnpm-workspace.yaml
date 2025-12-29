@@ -2,6 +2,7 @@ packages:
   - 'packages/*'
   - 'internal/*'
   - 'examples/*'
+  - 'schemes'
   - 'docs'
 
 catalog:

@@ -313,6 +313,15 @@ importers:
 
   packages/utils: {}
 
+  schemes:
+    dependencies:
+      recorder-core:
+        specifier: ^1.3.25011100
+        version: 1.3.25011100
+      vue:
+        specifier: 'catalog:'
+        version: 3.5.21(typescript@5.8.3)
+
 packages:
 
   '@apidevtools/json-schema-ref-parser@14.2.1':
@@ -6104,6 +6113,9 @@ packages:
   rechoir@0.6.2:
     resolution: {integrity: sha512-HFM8rkZ+i3zrV+4LQjwQ0W+ez98pApMGM3HUrN04j3CqzPOzl9nmP15Y8YXNm8QHGv/eacOVEjqhmWpkRV0NAw==}
     engines: {node: '>= 0.10'}
+
+  recorder-core@1.3.25011100:
+    resolution: {integrity: sha512-trXsCH0zurhoizT4Z22C0OsM0SDOW+2OvtgRxeLQFwxoFeqFjDjYZsbZEZUiKMJLhBvamI4K7Ic+qZ2LBo74TA==}
 
   refa@0.12.1:
     resolution: {integrity: sha512-J8rn6v4DBb2nnFqkqwy6/NnTYMcgLA+sLr0iIO41qpv0n+ngb7ksag2tMRl0inb1bbO/esUwzW1vbJi7K0sI0g==}
@@ -14018,6 +14030,8 @@ snapshots:
   rechoir@0.6.2:
     dependencies:
       resolve: 1.22.10
+
+  recorder-core@1.3.25011100: {}
 
   refa@0.12.1:
     dependencies:

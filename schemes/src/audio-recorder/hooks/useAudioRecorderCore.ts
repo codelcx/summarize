@@ -1,0 +1,341 @@
+import { onUnmounted, ref } from 'vue'
+import AudioRecorderCore, { IWaveConfig } from './AudioRecorderCore'
+
+export enum RecorderMode {
+  /** 已准备 */
+  READY,
+  /** 开始倒计时 */
+  COUNTDOWN,
+  /** 录音中 */
+  RECORDING,
+  /** 已完成 */
+  COMPLETE,
+}
+
+export interface RecorderOptions {
+  /** 最长录制时长（秒） */
+  maxDuration?: number
+  /** 静默时长(秒), 默认0秒 */
+  silenceDuration?: number
+}
+
+export function useAudioRecorderCore()
+{
+  let waveVisualizer: any = null // 波形绘制器
+  let recorder: AudioRecorderCore | null = null // 录音管理器
+  let startCountDownTimer: any = null // 开始录音倒计时定时器
+  let endCountDownTimer: any = null // 结束录音倒计时定时器
+
+  const hasPermission = ref(false) // 录音权限
+  const recordMode = ref<RecorderMode>(RecorderMode.READY) // 录音状态
+  const duration = ref(0) // 录音时长
+  const buffer = ref<Int16Array[] | undefined>(undefined) // 用于存储实时波形数据
+  const arrayBuffer = ref<ArrayBuffer | undefined>(undefined) // 录音结束后的音频数据
+  const startCountdown = ref(0) // 开始录音倒计时
+  const endCountDown = ref(0) // 结束录音倒计时
+
+  const config: RecorderOptions = {}
+
+  /**
+   * 销毁资源
+   */
+  onUnmounted(() =>
+  {
+    if (recorder)
+    {
+      recorder.stop()
+      recorder = null
+    }
+
+    if (startCountDownTimer)
+    {
+      clearTimeout(startCountDownTimer)
+    }
+
+    if (endCountDownTimer)
+    {
+      clearTimeout(endCountDownTimer)
+    }
+
+    console.warn('【RecorderApp】录音相关资源已销毁')
+  })
+
+  /**
+   * 初始化录音状态
+   */
+  function initRecordStatus()
+  {
+    duration.value = 0
+    startCountdown.value = 0
+    endCountDown.value = 0
+    buffer.value = undefined
+    arrayBuffer.value = undefined
+    recordMode.value = RecorderMode.READY
+  }
+
+  /**
+   * 实例化录音管理器
+   */
+  function initRecorder(options: Partial<RecorderOptions> = {})
+  {
+    initRecordStatus()
+    Object.assign(config, options)
+
+    if (recorder)
+    {
+      return recorder
+    }
+
+    recorder = new AudioRecorderCore()
+
+    // 录音权限回调(按照环境添加授权引导)
+    recorder.onPermission = (permission) =>
+    {
+      if (permission)
+      {
+        hasPermission.value = true
+        return
+      }
+
+      initRecordStatus()
+
+      // H5
+
+      // 小程序
+      // uni.showModal({
+      //     title: '提示',
+      //     content: '是否开启应用麦克风权限',
+      //     confirmText: '去设置',
+      //     cancelText: '取消',
+      //     success: (res) =>
+      //     {
+      //       if (res.confirm)
+      //       {
+      //         uni.openSetting({
+      //           success: (settingRes) =>
+      //           {
+      //             if (settingRes.authSetting['scope.record'])
+      //             {
+      //             }
+      //           }
+      //         });
+      //       }
+      //     }
+      //   });
+    }
+
+    // 录音开始回调
+    recorder.onStart = () =>
+    {
+      recorderLimitTimer()
+    }
+
+    // 录音结束回调
+    recorder.onStop = (buffer) =>
+    {
+      if (buffer instanceof ArrayBuffer)
+      {
+        arrayBuffer.value = buffer
+      }
+
+      recordMode.value = RecorderMode.COMPLETE
+
+      if (endCountDownTimer)
+      {
+        clearTimeout(endCountDownTimer)
+      }
+    }
+
+    // 录音帧数据回调
+    recorder.onFrameRecorded = (frameInfo, rawInfo) =>
+    {
+      if (rawInfo)
+      {
+        buffer.value = rawInfo.buffers
+        duration.value = rawInfo.duration
+
+        if (waveVisualizer)
+        {
+          recorder?.updateWaveVisualizer(
+            rawInfo.buffers,
+            rawInfo.powerLevel,
+            rawInfo.duration,
+            rawInfo.sampleRate,
+          )
+        }
+      }
+    }
+
+    // 首次判断录音权限
+    recorder.getPermission()
+
+    return recorder
+  }
+
+  /**
+   * 初始化波形绘制器
+   */
+  function initWaveVisualizer(config: IWaveConfig)
+  {
+    if (recorder)
+    {
+      waveVisualizer = recorder.initWaveVisualizer(config)
+    }
+  }
+
+  /**
+   * 限制录音时长定时器
+   */
+  async function recorderLimitTimer(duration?: number)
+  {
+    endCountDown.value = duration || config.maxDuration || 0
+
+    if (endCountDown.value <= 0)
+    {
+      return
+    }
+
+    if (endCountDownTimer)
+    {
+      clearInterval(endCountDownTimer)
+    }
+
+    endCountDownTimer = setInterval(
+      () =>
+      {
+        endCountDown.value--
+        if (endCountDown.value === 0)
+        {
+          clearInterval(endCountDownTimer)
+          endCountDownTimer = null
+        }
+      },
+      1000,
+    )
+  }
+
+  /**
+   * 倒计时录音定时器
+   */
+  async function recorderSilenceTimer(duration?: number)
+  {
+    startCountdown.value = duration || config.silenceDuration || 0
+
+    if (startCountdown.value <= 0)
+    {
+      return
+    }
+
+    if (startCountDownTimer)
+    {
+      clearInterval(startCountDownTimer)
+    }
+
+    return new Promise<void>((resolve) =>
+    {
+      recordMode.value = RecorderMode.COUNTDOWN
+      startCountDownTimer = setInterval(
+        () =>
+        {
+          startCountdown.value--
+          // 提前1秒启动录音，因为内部处理需要一定时间
+          // 防止倒计时结束时还未能录音
+          if (startCountdown.value === 1)
+          {
+            resolve()
+          }
+          if (startCountdown.value <= 0)
+          {
+            recordMode.value = RecorderMode.RECORDING
+            clearInterval(startCountDownTimer)
+            startCountDownTimer = null
+          }
+        },
+        1000,
+      )
+    })
+  }
+
+  /**
+   * 开始录音
+   */
+  async function startRecord()
+  {
+    if (!recorder)
+    {
+      console.error('【RecorderApp】录音管理器未初始化')
+      return
+    }
+
+    if (recordMode.value === RecorderMode.COUNTDOWN)
+    {
+      console.warn('【RecorderApp】正在倒计时')
+      return
+    }
+
+    if (recordMode.value === RecorderMode.RECORDING)
+    {
+      console.warn('【RecorderApp】正在录音中')
+      return
+    }
+
+    if (!hasPermission.value)
+    {
+      const permission = await recorder.getPermission()
+      if (!permission)
+      {
+        console.warn('【RecorderApp】未授权录音权限')
+        return false
+      }
+    }
+
+    initRecordStatus()
+    await recorderSilenceTimer()
+
+    recorder?.start()
+  }
+
+  /**
+   * 暂停录音
+   */
+  function pauseRecord()
+  {
+    recorder?.pause()
+    if (endCountDownTimer)
+    {
+      clearTimeout(endCountDownTimer)
+    }
+  }
+
+  /**
+   * 恢复录音
+   */
+  function resumeRecord()
+  {
+    recorder?.resume()
+    recorderLimitTimer(endCountDown.value)
+  }
+
+  /**
+   * 停止录音
+   */
+  async function stopRecord()
+  {
+    return await recorder?.stop()
+  }
+
+  return {
+    buffer,
+    arrayBuffer,
+    duration,
+    recordMode,
+    startCountdown,
+    endCountDown,
+    initRecorder,
+    initWaveVisualizer,
+    startRecord,
+    stopRecord,
+    pauseRecord,
+    resumeRecord,
+  }
+}
