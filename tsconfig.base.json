@@ -78,7 +78,8 @@
       "@cx/utils": ["./packages/utils"],
       "@cx/utils/*": ["./packages/utils/*"],
       "@cx/hooks": ["./packages/hooks"],
-      "@cx/hooks/*": ["./packages/hooks/*"]
+      "@cx/hooks/*": ["./packages/hooks/*"],
+      "@cx/schemes/*": ["./packages/schemes/*"]
     }
   },
   // 指定要包含在编译中的文件
@@ -87,7 +88,8 @@
     "packages/**/*",
     "examples/**/*",
     "scripts/*",
-    "typings/*.d.ts"
+    "schemes/**/*",
+    "*.d.ts"
   ],
   // 指定要从编译中排除的文件
   "exclude": ["node_modules"]

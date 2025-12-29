@@ -1,7 +1,8 @@
-declare module '*.vue'
+declare global
 {
-  import type { DefineComponent } from 'vue'
-
-  const component: DefineComponent<{}, {}, any>
-  export default component
+  interface Window {
+    clipboardData: DataTransfer
+  }
 }
+
+export {}

@@ -67,7 +67,6 @@ export function vue(options: OptionsOverrides & OptionsStylistic): TypedFlatConf
         'vue/define-macros-order': ['error', {
           order: ['defineOptions', 'defineProps', 'defineEmits', 'defineSlots'],
         }],
-        'vue/html-self-closing': 'off',
         'vue/dot-location': ['error', 'property'],
         'vue/dot-notation': ['error', { allowKeywords: true }],
         'vue/eqeqeq': ['error', 'smart'],

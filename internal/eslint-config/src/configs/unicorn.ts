@@ -47,6 +47,10 @@ export function unicorn(options: OptionsOverrides): TypedFlatConfigItem[]
             },
           },
         ],
+        'unicorn/consistent-function-scoping': 'off',
+        'unicorn/prefer-global-this': 'off',
+        'unicorn/require-module-specifiers': 'off',
+        'unicorn/no-array-for-each': 'off',
 
         ...overrides,
       },
