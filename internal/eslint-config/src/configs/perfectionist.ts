@@ -21,11 +21,23 @@ export function perfectionist(options: OptionsOverrides): TypedFlatConfigItem[]
             'internal',
             ['parent', 'sibling', 'index'],
             'side-effect',
+            'vue',
+            'react',
             'unknown',
           ],
           newlinesBetween: 'ignore',
           order: 'asc',
           type: 'line-length',
+          customGroups: [
+            {
+              groupName: 'vue',
+              elementNamePattern: ['/\.vue$/'],
+            },
+            {
+              groupName: 'react',
+              elementNamePattern: ['/\.jsx$/', '/\.tsx$/'],
+            },
+          ],
         }],
         'perfectionist/sort-named-exports': ['error', { order: 'asc', type: 'natural' }],
         'perfectionist/sort-named-imports': ['error', { order: 'asc', type: 'natural' }],

@@ -20,9 +20,11 @@ export default {
     '**/build/**',
   ],
   rules: {
+    '@stylistic/indentation': 2,
     'order/properties-order': propertyGroup,
     '@stylistic/block-opening-brace-newline-after': 'always',
     '@stylistic/block-closing-brace-newline-before': 'always',
+    'selector-class-pattern': '^[a-z]',
   },
   overrides: [
     {

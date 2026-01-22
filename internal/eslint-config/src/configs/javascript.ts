@@ -183,7 +183,7 @@ export function javascript(options: OptionsOverrides): TypedFlatConfigItem[]
         'prefer-template': 'error',
         'symbol-description': 'error',
         'unicode-bom': ['error', 'never'],
-        'unused-imports/no-unused-imports': 'warn',
+        'unused-imports/no-unused-imports': 'off',
         'unused-imports/no-unused-vars': [
           'off',
           {
