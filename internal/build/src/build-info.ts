@@ -5,13 +5,13 @@ import { epOutput, PKG_NAME } from './utils'
 export const modules = ['esm', 'cjs'] as const
 export type Module = (typeof modules)[number]
 export interface BuildInfo {
+  ext: 'mjs' | 'cjs' | 'js'
+  format: ModuleFormat
+  module: 'ESNext' | 'CommonJS'
   bundle: {
     /** e.g: `cx/es` */
     path: string
   }
-  ext: 'mjs' | 'cjs' | 'js'
-  format: ModuleFormat
-  module: 'ESNext' | 'CommonJS'
 
   output: {
     /** e.g: `es` */

@@ -18,7 +18,7 @@ const plugins: Plugin[] = [
   postcss({
     extract: 'index.css',
     extensions: ['.css', '.scss'],
-  }),
+  }) as any,
   nodeResolve({
     extensions: ['.mjs', '.js', '.json', '.ts'],
   }),

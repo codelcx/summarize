@@ -72,7 +72,7 @@
     "types": ["node"],
     // 指定模块名到基于 baseUrl 的路径映射
     "paths": {
-      "cx": ["packages/cx"],
+      "@cx": ["packages/cx"],
       "@cx/components": ["./packages/components"],
       "@cx/components/*": ["./packages/components/*"],
       "@cx/utils": ["./packages/utils"],

@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@9.5.0",
   "scripts": {
-    "dev:vue": "pnpm -C examples/vue dev",
+    "dev": "pnpm -C examples/vue dev",
     "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
     "clean:dist": "rimraf dist",
     "build": "pnpm run -C internal/build start",
@@ -40,7 +40,7 @@
     "lint-staged": "^16.2.5",
     "picocolors": "^1.1.1",
     "pretty-bytes": "^7.1.0",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.2",
     "simple-git-hooks": "^2.13.1",
     "stylelint": "^16.26.1",
     "stylelint-config-recess-order": "^7.4.0",

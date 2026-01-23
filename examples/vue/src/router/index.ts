@@ -1,7 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import TipTapEditor from '@cx/schemes/tiptap/index.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import MilldownEditor from '@cx/schemes/milkdown/index.vue'
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -11,12 +9,12 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/tiptap',
     name: 'TipTap Editor',
-    component: TipTapEditor,
+    component: () => import('@cx/schemes/tiptap/index.vue'),
   },
   {
     path: '/milkdown',
     name: 'Milkdown Editor',
-    component: MilldownEditor,
+    component: () => import('@cx/schemes/milkdown/index.vue'),
   },
 ]
 

@@ -9,7 +9,7 @@ import { buildOutput, pathRewriter, projRoot, run, withTaskName } from '../utils
 export const generateTypesDefinitions = async () =>
 {
   await run(
-    'npx vue-tsc -p tsconfig.web.json --declaration --emitDeclarationOnly --declarationDir dist/types',
+    'npx vue-tsc -p tsconfig.app.json --declaration --emitDeclarationOnly --declarationDir dist/types',
   )
   const typesDir = path.join(buildOutput, 'types', 'packages')
   const filePaths = await glob(`**/*.d.ts`, {
@@ -29,7 +29,7 @@ export const generateTypesDefinitions = async () =>
 
 export const cleanTypeBuildInfo = async () =>
 {
-  await remove(path.resolve(projRoot, 'tsconfig.web.tsbuildinfo'))
+  await remove(path.resolve(projRoot, 'tsconfig.app.tsbuildinfo'))
 }
 
 export const cleanTypesDefinitions = async () =>
