@@ -45,6 +45,8 @@
   },
   "homepage": "https://github.com/vuejs/core/tree/main/packages/schemes#readme",
   "dependencies": {
+    "@babel/core": "^7.28.6",
+    "@babel/types": "^7.28.6",
     "@milkdown/crepe": "^7.18.0",
     "@milkdown/kit": "^7.18.0",
     "@milkdown/theme-nord": "^7.18.0",
@@ -58,9 +60,11 @@
     "@tiptap/starter-kit": "^3.14.0",
     "@tiptap/vue-3": "^3.14.0",
     "recorder-core": "^1.3.25011100",
+    "vite": "^7.1.2",
     "vue": "catalog:"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.5",
     "@types/react": "^19.2.9"
   }
 }
