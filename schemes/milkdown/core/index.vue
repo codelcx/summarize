@@ -25,16 +25,17 @@ import { TextSelection } from '@milkdown/kit/prose/state'
 import { commonmark } from '@milkdown/kit/preset/commonmark'
 import { listener, listenerCtx } from '@milkdown/kit/plugin/listener'
 import { codeBlockComponent } from '@milkdown/kit/component/code-block'
+import { imageBlockComponent } from '@milkdown/kit/component/image-block'
 import { listItemBlockComponent } from '@milkdown/kit/component/list-item-block'
 import { defaultValueCtx, Editor, editorViewCtx, rootCtx } from '@milkdown/kit/core'
-import { imageComponent } from '../nodes/image'
+import { customComponent } from '../nodes/custom'
 import { placeholder, placeholderConfig } from '../plugins/placeholder'
 import '@milkdown/theme-nord/style.css'
 import '@milkdown/kit/prose/view/style/prosemirror.css'
 
 const editor = ref<Editor>()
 const milkdown = ref<HTMLElement>()
-const markdown = ref('Hello Milkdown')
+const markdown = ref('')
 const placeholderText = ref('Write something...')
 
 function initEditor()
@@ -58,10 +59,12 @@ function initEditor()
     .use(listener)
     // markdown语法
     .use(commonmark)
+    // 自定义节点
+    .use(customComponent)
     // 占位符
     .use(placeholder)
-    // 自定义图片格式
-    .use(imageComponent)
+    // 内置图片格式
+    .use(imageBlockComponent)
     // 代码块
     .use(codeBlockComponent)
     // 列表
@@ -76,6 +79,12 @@ function initEditor()
 
 onMounted(() => initEditor())
 
+function markdownToHtml(ctx: Ctx)
+{
+  const editorView = ctx.get(editorViewCtx)
+  const html = editorView.dom.innerHTML
+}
+
 function autoFocusEditor(ctx: Ctx)
 {
   const view = ctx.get(editorViewCtx)
@@ -88,12 +97,12 @@ function autoFocusEditor(ctx: Ctx)
 
 function listenEditorFocus()
 {
-  console.log('focus')
+  // console.log('focus')
 }
 
 function listenEditorBlur()
 {
-  console.log('blur')
+  // console.log('blur')
 }
 
 function saveEditor(markdown: string)
@@ -104,10 +113,10 @@ function saveEditor(markdown: string)
 function onUpload(type: 'image' | 'video')
 {
   placeholderText.value = 'write something here...'
-  const imageMd = `![image|real-url](https://picsum.photos/200/300 "this is a title")`
-  const videoMd = `![video|real url](https://picsum.photos/200/300)`
+  const videoMd = `![video|url](https://picsum.photos/200/200)`
+  const imageMd = `![image|url](https://picsum.photos/200/300 "this is a title")`
   const scheme = type === 'image' ? imageMd : videoMd
-  editor.value?.action(insert(scheme, true))
+  editor.value?.action(insert(scheme))
 }
 </script>
 

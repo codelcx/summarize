@@ -1,21 +1,21 @@
-import type { Node } from '@milkdown/kit/prose/model'
-import type { NodeViewConstructor } from '@milkdown/kit/prose/view'
 import { $view } from '@milkdown/kit/utils'
+import { Node } from '@milkdown/kit/prose/model'
 import { createApp, ref, watchEffect } from 'vue'
-import { imageSchema } from '@milkdown/kit/preset/commonmark'
-import { imageConfig } from './config'
-import Image from './components/image'
+import { NodeViewConstructor } from '@milkdown/kit/prose/view'
+import { customConfig } from './config'
+import { customNodeSchema } from './schema'
+import CustomComponent from './components/custom.vue'
 
-export const ImageView = $view(
-  imageSchema.node,
+export const customView = $view(
+  customNodeSchema.node,
   (ctx): NodeViewConstructor =>
   {
     return (initialNode, view, getPos) =>
     {
-      console.log('initialNode', initialNode)
       const src = ref(initialNode.attrs.src)
       const alt = ref(initialNode.attrs.alt)
       const title = ref(initialNode.attrs.title)
+      const align = ref(initialNode.attrs.align)
       const selected = ref(false)
       const readonly = ref(!view.editable)
       const setAttr = (attr: string, value: unknown) =>
@@ -32,17 +32,20 @@ export const ImageView = $view(
         )
       }
 
-      const config = ctx.get(imageConfig.key)
-      const app = createApp(Image, {
-        src,
-        alt,
-        title,
+      const config = ctx.get(customConfig.key)
+      const app = createApp(CustomComponent, {
+        attrs: {
+          src,
+          alt,
+          title,
+          align,
+        },
         selected,
         readonly,
         setAttr,
         config,
       })
-      const dom = document.createElement('span')
+      const dom = document.createElement('p')
       dom.className = 'custom-image'
       const disposeSelectedWatcher = watchEffect(() =>
       {
@@ -54,6 +57,7 @@ export const ImageView = $view(
         src.value = node.attrs.src
         alt.value = node.attrs.alt
         title.value = node.attrs.title
+        align.value = node.attrs.align
       }
       bindAttrs(initialNode)
       app.mount(dom)
