@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "vue": "catalog:"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1"
   }
 }
