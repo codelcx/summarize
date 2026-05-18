@@ -3,6 +3,7 @@ packages:
   - 'internal/*'
   - 'examples/*'
   - 'schemes'
+  - 'plugins'
   - 'docs'
 
 catalog:

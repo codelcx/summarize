@@ -29,6 +29,7 @@
     "@cx/hooks": "workspace:*",
     "@cx/utils": "workspace:*",
     "@cx/schemes": "workspace:*",
+    "@cx/plugins": "workspace:*",
     "vue": "^3.5.25"
   },
   "devDependencies": {
